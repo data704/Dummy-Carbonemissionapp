@@ -89,6 +89,30 @@ function addScope1Entry() {
                 <label>Vehicle/Equipment ID</label>
                 <input type="text" class="vehicle-id" placeholder="Optional - for fleet tracking">
             </div>
+
+            <div class="inline-financial">
+                <div class="inline-financial-head">
+                    <span>Financial Information</span>
+                    <small>Track spend per fuel entry</small>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Amount Spent</label>
+                        <input type="number" class="financial-amount" placeholder="0.00" step="0.01">
+                    </div>
+                    <div class="form-group">
+                        <label>Currency</label>
+                        <select class="financial-currency">
+                            <option value="USD" selected>USD</option>
+                            <option value="EUR">EUR</option>
+                            <option value="GBP">GBP</option>
+                            <option value="CAD">CAD</option>
+                            <option value="AUD">AUD</option>
+                            <option value="SAR">SAR</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
         </div>
     `;
     
@@ -148,6 +172,30 @@ function addScope2Entry() {
                         <option value="EU - Average">EU - Average</option>
                         <option value="UK - Grid">UK - Grid</option>
                     </select>
+                </div>
+            </div>
+
+            <div class="inline-financial scope2-inline">
+                <div class="inline-financial-head">
+                    <span>Financial Information</span>
+                    <small>Link spend to Scope 2 entry</small>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Amount Spent</label>
+                        <input type="number" class="financial-amount" placeholder="0.00" step="0.01">
+                    </div>
+                    <div class="form-group">
+                        <label>Currency</label>
+                        <select class="financial-currency">
+                            <option value="USD" selected>USD</option>
+                            <option value="EUR">EUR</option>
+                            <option value="GBP">GBP</option>
+                            <option value="CAD">CAD</option>
+                            <option value="AUD">AUD</option>
+                            <option value="SAR">SAR</option>
+                        </select>
+                    </div>
                 </div>
             </div>
         </div>
@@ -367,8 +415,12 @@ function submitExtractedData() {
     }
     
     const form = document.querySelector('.extracted-form');
-    const electricityInput = form.querySelector('input[type="number"]');
-    const unitSelect = form.querySelectorAll('select')[1];
+    const numberInputs = form.querySelectorAll('input[type="number"]');
+    const electricityInput = numberInputs[0];
+    const totalCostInput = numberInputs[1];
+    const selectElements = form.querySelectorAll('select');
+    const unitSelect = selectElements[1];
+    const currencySelect = selectElements[2];
     const supplierInput = form.querySelectorAll('input[type="text"]')[1];
     
     const entry = {
@@ -377,7 +429,9 @@ function submitExtractedData() {
         unit: unitSelect?.value || 'kWh',
         calcMethod: 'location',
         supplier: supplierInput?.value || 'City Power Company',
-        gridRegion: 'US - WECC'
+        gridRegion: 'US - WECC',
+        costAmount: parseFloat(totalCostInput?.value) || 0,
+        currency: currencySelect?.value || 'USD'
     };
     
     console.log('Adding Scope 2 entry:', entry);
@@ -417,6 +471,8 @@ function submitManualEntry() {
         const amount = entry.querySelector('.fuel-amount')?.value;
         const unit = entry.querySelector('.fuel-unit')?.value;
         const vehicleId = entry.querySelector('.vehicle-id')?.value;
+        const costValue = entry.querySelector('.financial-amount')?.value;
+        const currency = entry.querySelector('.financial-currency')?.value || 'USD';
         
         console.log('Scope 1 entry data:', { fuelType, combustionType, amount, unit });
         
@@ -427,7 +483,9 @@ function submitManualEntry() {
                 combustionType: combustionType || 'mobile',
                 amount: parseFloat(amount),
                 unit: unit || 'Liters',
-                vehicleId: vehicleId || ''
+                vehicleId: vehicleId || '',
+                costAmount: parseFloat(costValue) || 0,
+                currency
             };
             
             const result = DataStore.addScope1Entry(entryData);
@@ -445,6 +503,8 @@ function submitManualEntry() {
         const calcMethod = calcRadio?.value;
         const supplier = entry.querySelector('.supplier')?.value;
         const gridRegion = entry.querySelector('.grid-region')?.value;
+        const costValue = entry.querySelector('.financial-amount')?.value;
+        const currency = entry.querySelector('.financial-currency')?.value || 'USD';
         
         console.log('Scope 2 entry data:', { electricity, unit, calcMethod, supplier, gridRegion });
         
@@ -455,7 +515,9 @@ function submitManualEntry() {
                 unit: unit || 'kWh',
                 calcMethod: calcMethod || 'location',
                 supplier: supplier || '',
-                gridRegion: gridRegion || 'US - WECC'
+                gridRegion: gridRegion || 'US - WECC',
+                costAmount: parseFloat(costValue) || 0,
+                currency
             };
             
             const result = DataStore.addScope2Entry(entryData);

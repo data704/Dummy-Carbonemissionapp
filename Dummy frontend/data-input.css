@@ -385,6 +385,33 @@
     color: white;
 }
 
+.inline-financial {
+    margin-top: 12px;
+    padding: 16px;
+    border: 1px dashed #D0D7E3;
+    border-radius: 12px;
+    background: #FFFFFF;
+}
+
+.scope2-inline {
+    border-color: rgba(59, 130, 246, 0.35);
+    background: #F1F5FF;
+}
+
+.inline-financial-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    margin-bottom: 12px;
+    font-weight: 600;
+    color: #1E293B;
+}
+
+.inline-financial-head small {
+    font-weight: 500;
+    color: #94A3B8;
+}
+
 /* Add Entry Button */
 .add-entry-container {
     margin-bottom: 24px;

@@ -24,7 +24,9 @@ const DataStore = {
                     unit: 'Liters',
                     vehicleId: 'VH-001',
                     emissions: 198,
-                    status: 'verified'
+                    status: 'verified',
+                    costAmount: 720,
+                    currency: 'USD'
                 },
                 {
                     id: 2,
@@ -35,7 +37,9 @@ const DataStore = {
                     unit: 'm³',
                     vehicleId: '',
                     emissions: 213,
-                    status: 'verified'
+                    status: 'verified',
+                    costAmount: 540,
+                    currency: 'USD'
                 },
                 {
                     id: 3,
@@ -46,7 +50,9 @@ const DataStore = {
                     unit: 'Liters',
                     vehicleId: 'VH-003',
                     emissions: 139,
-                    status: 'verified'
+                    status: 'verified',
+                    costAmount: 520,
+                    currency: 'USD'
                 }
             ];
             localStorage.setItem(this.KEYS.SCOPE1_ENTRIES, JSON.stringify(demoScope1));
@@ -63,7 +69,9 @@ const DataStore = {
                     supplier: 'City Power Company',
                     gridRegion: 'US - WECC',
                     emissions: 520,
-                    status: 'verified'
+                    status: 'verified',
+                    costAmount: 1480,
+                    currency: 'USD'
                 },
                 {
                     id: 2,
@@ -74,7 +82,9 @@ const DataStore = {
                     supplier: 'Green Energy Corp',
                     gridRegion: 'US - RFC',
                     emissions: 680,
-                    status: 'verified'
+                    status: 'verified',
+                    costAmount: 2120,
+                    currency: 'USD'
                 },
                 {
                     id: 3,
@@ -85,7 +95,9 @@ const DataStore = {
                     supplier: 'City Power Company',
                     gridRegion: 'US - WECC',
                     emissions: 400,
-                    status: 'verified'
+                    status: 'verified',
+                    costAmount: 1085,
+                    currency: 'USD'
                 }
             ];
             localStorage.setItem(this.KEYS.SCOPE2_ENTRIES, JSON.stringify(demoScope2));
@@ -130,6 +142,8 @@ const DataStore = {
         const entries = this.getScope1Entries();
         entry.id = Date.now();
         entry.status = 'verified';
+        entry.costAmount = Number(entry.costAmount) || 0;
+        entry.currency = entry.currency || 'USD';
         entry.emissions = this.calculateScope1Emissions(entry);
         entries.unshift(entry);
         localStorage.setItem(this.KEYS.SCOPE1_ENTRIES, JSON.stringify(entries));
@@ -152,6 +166,8 @@ const DataStore = {
         const entries = this.getScope2Entries();
         entry.id = Date.now();
         entry.status = 'verified';
+        entry.costAmount = Number(entry.costAmount) || 0;
+        entry.currency = entry.currency || 'USD';
         entry.emissions = this.calculateScope2Emissions(entry);
         entries.unshift(entry);
         localStorage.setItem(this.KEYS.SCOPE2_ENTRIES, JSON.stringify(entries));
@@ -285,13 +301,33 @@ const DataStore = {
     getAmountSpent: function() {
         const scope1 = this.getScope1Entries();
         const scope2 = this.getScope2Entries();
+        const rates = {
+            USD: 1,
+            EUR: 1.08,
+            GBP: 1.27,
+            CAD: 0.74,
+            AUD: 0.66,
+            SAR: 0.27
+        };
+        const toUsd = (amount, currency) => {
+            if (!amount || amount <= 0) return 0;
+            return amount * (rates[currency] || 1);
+        };
         let total = 0;
         scope1.forEach(entry => {
-            total += (entry.amount || 0) * 0.8;
+            if (entry.costAmount && entry.costAmount > 0) {
+                total += toUsd(entry.costAmount, entry.currency);
+            } else {
+                total += (entry.amount || 0) * 0.8;
+            }
         });
         scope2.forEach(entry => {
-            const kwh = entry.unit === 'MWh' ? (entry.electricity || 0) * 1000 : (entry.electricity || 0);
-            total += kwh * 0.12;
+            if (entry.costAmount && entry.costAmount > 0) {
+                total += toUsd(entry.costAmount, entry.currency);
+            } else {
+                const kwh = entry.unit === 'MWh' ? (entry.electricity || 0) * 1000 : (entry.electricity || 0);
+                total += kwh * 0.12;
+            }
         });
         return Math.round(total);
     },

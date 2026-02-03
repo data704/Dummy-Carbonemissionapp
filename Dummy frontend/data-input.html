@@ -308,6 +308,30 @@
                                 <label>Vehicle/Equipment ID</label>
                                 <input type="text" class="vehicle-id" placeholder="Optional - for fleet tracking">
                             </div>
+
+                        <div class="inline-financial">
+                            <div class="inline-financial-head">
+                                <span>Financial Information</span>
+                                <small>Track spend per fuel entry</small>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>Amount Spent</label>
+                                    <input type="number" class="financial-amount" placeholder="0.00" step="0.01">
+                                </div>
+                                <div class="form-group">
+                                    <label>Currency</label>
+                                    <select class="financial-currency">
+                                        <option value="USD" selected>USD</option>
+                                        <option value="EUR">EUR</option>
+                                        <option value="GBP">GBP</option>
+                                        <option value="CAD">CAD</option>
+                                        <option value="AUD">AUD</option>
+                                        <option value="SAR">SAR</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
                         </div>
                     </div>
                     
@@ -367,6 +391,30 @@
                                     </select>
                                 </div>
                             </div>
+
+                            <div class="inline-financial scope2-inline">
+                                <div class="inline-financial-head">
+                                    <span>Financial Information</span>
+                                    <small>Link utility spend to Scope 2</small>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label>Amount Spent</label>
+                                        <input type="number" class="financial-amount" placeholder="0.00" step="0.01">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Currency</label>
+                                        <select class="financial-currency">
+                                            <option value="USD" selected>USD</option>
+                                            <option value="EUR">EUR</option>
+                                            <option value="GBP">GBP</option>
+                                            <option value="CAD">CAD</option>
+                                            <option value="AUD">AUD</option>
+                                            <option value="SAR">SAR</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     
@@ -375,29 +423,6 @@
                         <button type="button" class="btn-add-entry scope2-add" onclick="addScope2Entry()">
                             <i class="fas fa-plus"></i> Add Another Scope 2 Entry
                         </button>
-                    </div>
-                    
-                    <!-- Financial Information -->
-                    <div class="financial-section">
-                        <h3>Financial Information</h3>
-                        <div class="section-divider teal"></div>
-                        
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label>Amount</label>
-                                <input type="number" placeholder="0.00" step="0.01">
-                            </div>
-                            <div class="form-group">
-                                <label>Currency</label>
-                                <select>
-                                    <option>USD</option>
-                                    <option>EUR</option>
-                                    <option>GBP</option>
-                                    <option>CAD</option>
-                                    <option>AUD</option>
-                                </select>
-                            </div>
-                        </div>
                     </div>
                     
                     <div class="form-actions">
