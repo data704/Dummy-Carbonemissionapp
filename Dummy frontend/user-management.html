@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>URIMPACT - User Management</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Sidebar Navigation -->
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <div class="logo">
+                <img src="logo.svg" alt="URIMPACT Logo">
+            </div>
+        </div>
+        <nav class="sidebar-nav">
+            <ul>
+                <li>
+                    <a href="index.html">
+                        <i class="fas fa-th-large"></i>
+                        <span>Dashboard</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="data-input.html">
+                        <i class="fas fa-file-import"></i>
+                        <span>Data Input</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="reports.html">
+                        <i class="fas fa-chart-bar"></i>
+                        <span>Reports</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="decarbonization.html">
+                        <i class="fas fa-leaf"></i>
+                        <span>Decarbonization</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="settings.html">
+                        <i class="fas fa-cog"></i>
+                        <span>Settings</span>
+                    </a>
+                </li>
+                <li class="active">
+                    <a href="user-management.html">
+                        <i class="fas fa-users"></i>
+                        <span>User Management</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+        <div class="sidebar-footer">
+            <div class="user-info">
+                <div class="user-avatar">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="user-details">
+                    <span class="user-name">Muhammad Ahmad</span>
+                    <span class="user-role">Admin</span>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <header class="header">
+            <div class="header-left">
+                <button class="menu-toggle" id="menuToggle">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <h1 style="font-size: 20px; margin: 0;">User Management</h1>
+            </div>
+            <div class="header-right">
+                <div class="header-item notification" id="notificationBtn">
+                    <i class="fas fa-bell"></i>
+                    <span class="badge" id="notificationBadge">3</span>
+                    <div class="dropdown-menu notification-dropdown" id="notificationDropdown">
+                        <div class="dropdown-header"><h4>Notifications</h4><button class="mark-all-read" onclick="markAllRead()">Mark all read</button></div>
+                        <div class="dropdown-content">
+                            <div class="notification-item unread"><div class="notification-icon success"><i class="fas fa-user-plus"></i></div><div class="notification-content"><p>New user added successfully</p><span class="notification-time">5 minutes ago</span></div></div>
+                        </div>
+                        <div class="dropdown-footer"><a href="#">View all</a></div>
+                    </div>
+                </div>
+                <div class="header-item profile" id="profileBtn">
+                    <div class="user-avatar" style="width: 36px; height: 36px; font-size: 14px;"><i class="fas fa-user"></i></div>
+                    <span class="user-name-header" id="userNameHeader">User</span>
+                    <i class="fas fa-chevron-down"></i>
+                    <div class="dropdown-menu profile-dropdown" id="profileDropdown">
+                        <div class="profile-header"><div class="profile-avatar"><i class="fas fa-user"></i></div><div class="profile-info"><h4 id="profileName">User</h4><p id="profileEmail">user@example.com</p></div></div>
+                        <div class="dropdown-content">
+                            <a href="profile.html" class="dropdown-item"><i class="fas fa-user-circle"></i><span>My Profile</span></a>
+                            <a href="settings.html" class="dropdown-item"><i class="fas fa-cog"></i><span>Settings</span></a>
+                            <div class="dropdown-divider"></div>
+                            <a href="#" class="dropdown-item logout" onclick="logout()"><i class="fas fa-sign-out-alt"></i><span>Sign Out</span></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <div class="dashboard-content">
+            <!-- Summary Cards -->
+            <div class="summary-cards" style="grid-template-columns: repeat(4, 1fr);">
+                <div class="card summary-card total">
+                    <div class="card-content">
+                        <h3>Total Users</h3>
+                        <div class="value">12</div>
+                    </div>
+                    <div class="card-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                </div>
+                <div class="card summary-card scope1">
+                    <div class="card-content">
+                        <h3>Admins</h3>
+                        <div class="value">3</div>
+                    </div>
+                    <div class="card-icon">
+                        <i class="fas fa-user-shield"></i>
+                    </div>
+                </div>
+                <div class="card summary-card scope2">
+                    <div class="card-content">
+                        <h3>Editors</h3>
+                        <div class="value">5</div>
+                    </div>
+                    <div class="card-icon">
+                        <i class="fas fa-user-edit"></i>
+                    </div>
+                </div>
+                <div class="card summary-card target">
+                    <div class="card-content">
+                        <h3>Viewers</h3>
+                        <div class="value">4</div>
+                    </div>
+                    <div class="card-icon">
+                        <i class="fas fa-user"></i>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Users Table -->
+            <div class="card facility-card">
+                <div class="card-header">
+                    <h2><i class="fas fa-users"></i> All Users</h2>
+                    <button class="btn btn-primary">
+                        <i class="fas fa-plus"></i> Add User
+                    </button>
+                </div>
+                <div class="facility-content">
+                    <table class="facility-table">
+                        <thead>
+                            <tr>
+                                <th>User</th>
+                                <th>Email</th>
+                                <th>Role</th>
+                                <th>Status</th>
+                                <th>Last Active</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <div style="display: flex; align-items: center; gap: 12px;">
+                                        <div class="user-avatar" style="width: 36px; height: 36px; font-size: 12px;">JS</div>
+                                        <strong>John Smith</strong>
+                                    </div>
+                                </td>
+                                <td>john.smith@acme.com</td>
+                                <td><span class="role-badge admin">Admin</span></td>
+                                <td><span class="status-badge verified">Active</span></td>
+                                <td>Just now</td>
+                                <td>
+                                    <button class="btn btn-sm" style="background: var(--accent-light); color: var(--accent);">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div style="display: flex; align-items: center; gap: 12px;">
+                                        <div class="user-avatar" style="width: 36px; height: 36px; font-size: 12px; background: var(--scope2-color);">SJ</div>
+                                        <strong>Sarah Johnson</strong>
+                                    </div>
+                                </td>
+                                <td>sarah.johnson@acme.com</td>
+                                <td><span class="role-badge admin">Admin</span></td>
+                                <td><span class="status-badge verified">Active</span></td>
+                                <td>2 hours ago</td>
+                                <td>
+                                    <button class="btn btn-sm" style="background: var(--accent-light); color: var(--accent);">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div style="display: flex; align-items: center; gap: 12px;">
+                                        <div class="user-avatar" style="width: 36px; height: 36px; font-size: 12px; background: #8B5CF6;">MW</div>
+                                        <strong>Mike Wilson</strong>
+                                    </div>
+                                </td>
+                                <td>mike.wilson@acme.com</td>
+                                <td><span class="role-badge editor">Editor</span></td>
+                                <td><span class="status-badge verified">Active</span></td>
+                                <td>1 day ago</td>
+                                <td>
+                                    <button class="btn btn-sm" style="background: var(--accent-light); color: var(--accent);">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div style="display: flex; align-items: center; gap: 12px;">
+                                        <div class="user-avatar" style="width: 36px; height: 36px; font-size: 12px; background: #F59E0B;">ED</div>
+                                        <strong>Emily Davis</strong>
+                                    </div>
+                                </td>
+                                <td>emily.davis@acme.com</td>
+                                <td><span class="role-badge editor">Editor</span></td>
+                                <td><span class="status-badge verified">Active</span></td>
+                                <td>3 days ago</td>
+                                <td>
+                                    <button class="btn btn-sm" style="background: var(--accent-light); color: var(--accent);">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div style="display: flex; align-items: center; gap: 12px;">
+                                        <div class="user-avatar" style="width: 36px; height: 36px; font-size: 12px; background: var(--gray-500);">RB</div>
+                                        <strong>Robert Brown</strong>
+                                    </div>
+                                </td>
+                                <td>robert.brown@acme.com</td>
+                                <td><span class="role-badge viewer">Viewer</span></td>
+                                <td><span class="status-badge pending">Inactive</span></td>
+                                <td>2 weeks ago</td>
+                                <td>
+                                    <button class="btn btn-sm" style="background: var(--accent-light); color: var(--accent);">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <style>
+        .role-badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        .role-badge.admin {
+            background: rgba(239, 68, 68, 0.1);
+            color: #EF4444;
+        }
+        .role-badge.editor {
+            background: rgba(59, 130, 246, 0.1);
+            color: #3B82F6;
+        }
+        .role-badge.viewer {
+            background: rgba(148, 163, 184, 0.1);
+            color: #64748B;
+        }
+        .user-avatar {
+            background: var(--accent);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            font-weight: 600;
+        }
+    </style>
+    <script src="script.js"></script>
+    <script src="auth.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const user = checkAuth();
+            if (!user) { window.location.href = 'login.html'; return; }
+            document.getElementById('userNameHeader').textContent = user.firstName || user.name;
+            document.getElementById('profileName').textContent = user.name;
+            document.getElementById('profileEmail').textContent = user.email;
+            const sidebarUserName = document.querySelector('.user-name');
+            if (sidebarUserName) sidebarUserName.textContent = user.name;
+
+            document.getElementById('notificationBtn')?.addEventListener('click', e => { e.stopPropagation(); document.getElementById('notificationDropdown')?.classList.toggle('active'); document.getElementById('profileDropdown')?.classList.remove('active'); });
+            document.getElementById('profileBtn')?.addEventListener('click', e => { e.stopPropagation(); document.getElementById('profileDropdown')?.classList.toggle('active'); document.getElementById('notificationDropdown')?.classList.remove('active'); });
+            document.addEventListener('click', () => { document.getElementById('notificationDropdown')?.classList.remove('active'); document.getElementById('profileDropdown')?.classList.remove('active'); });
+            
+            // Load profile picture
+            const profilePicture = localStorage.getItem('urimpact_profile_picture');
+            if (profilePicture) {
+                const avatars = [document.querySelector('.header-item.profile .user-avatar'), document.querySelector('.profile-avatar'), document.querySelector('.sidebar-footer .user-avatar')];
+                avatars.forEach(avatar => { if (avatar) avatar.innerHTML = `<img src="${profilePicture}" style="width: 100%; height: 100%; object-fit: cover; border-radius: 50%;" alt="Avatar">`; });
+            }
+        });
+        function markAllRead() { document.querySelectorAll('.notification-item.unread').forEach(i => i.classList.remove('unread')); document.getElementById('notificationBadge').style.display = 'none'; }
+    </script>
+</body>
+</html>

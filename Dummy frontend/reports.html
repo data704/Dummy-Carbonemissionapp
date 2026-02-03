@@ -1,0 +1,770 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>URIMPACT - Reports</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <!-- Sidebar Navigation -->
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <div class="logo">
+                <img src="logo.svg" alt="URIMPACT Logo">
+            </div>
+        </div>
+        <nav class="sidebar-nav">
+            <ul>
+                <li>
+                    <a href="index.html">
+                        <i class="fas fa-th-large"></i>
+                        <span>Dashboard</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="data-input.html">
+                        <i class="fas fa-file-import"></i>
+                        <span>Data Input</span>
+                    </a>
+                </li>
+                <li class="active">
+                    <a href="reports.html">
+                        <i class="fas fa-chart-bar"></i>
+                        <span>Reports</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="decarbonization.html">
+                        <i class="fas fa-leaf"></i>
+                        <span>Decarbonization</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="settings.html">
+                        <i class="fas fa-cog"></i>
+                        <span>Settings</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="user-management.html">
+                        <i class="fas fa-users"></i>
+                        <span>User Management</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+        <div class="sidebar-footer">
+            <div class="user-info">
+                <div class="user-avatar">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="user-details">
+                    <span class="user-name">Muhammad Ahmad</span>
+                    <span class="user-role">Admin</span>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <header class="header">
+            <div class="header-left">
+                <button class="menu-toggle" id="menuToggle">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <h1 style="font-size: 20px; margin: 0;">Reports</h1>
+            </div>
+            <div class="header-right">
+                <div class="header-item notification" id="notificationBtn">
+                    <i class="fas fa-bell"></i>
+                    <span class="badge" id="notificationBadge">3</span>
+                    <div class="dropdown-menu notification-dropdown" id="notificationDropdown">
+                        <div class="dropdown-header"><h4>Notifications</h4><button class="mark-all-read" onclick="markAllRead()">Mark all read</button></div>
+                        <div class="dropdown-content">
+                            <div class="notification-item unread"><div class="notification-icon success"><i class="fas fa-check-circle"></i></div><div class="notification-content"><p>Report generated successfully</p><span class="notification-time">5 minutes ago</span></div></div>
+                        </div>
+                        <div class="dropdown-footer"><a href="#">View all</a></div>
+                    </div>
+                </div>
+                <div class="header-item profile" id="profileBtn">
+                    <div class="user-avatar" style="width: 36px; height: 36px; font-size: 14px;"><i class="fas fa-user"></i></div>
+                    <span class="user-name-header" id="userNameHeader">User</span>
+                    <i class="fas fa-chevron-down"></i>
+                    <div class="dropdown-menu profile-dropdown" id="profileDropdown">
+                        <div class="profile-header"><div class="profile-avatar"><i class="fas fa-user"></i></div><div class="profile-info"><h4 id="profileName">User</h4><p id="profileEmail">user@example.com</p></div></div>
+                        <div class="dropdown-content">
+                            <a href="profile.html" class="dropdown-item"><i class="fas fa-user-circle"></i><span>My Profile</span></a>
+                            <a href="settings.html" class="dropdown-item"><i class="fas fa-cog"></i><span>Settings</span></a>
+                            <div class="dropdown-divider"></div>
+                            <a href="#" class="dropdown-item logout" onclick="logout()"><i class="fas fa-sign-out-alt"></i><span>Sign Out</span></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <div class="dashboard-content">
+            <!-- Report Options -->
+            <div class="summary-cards" style="grid-template-columns: repeat(3, 1fr);">
+                <div class="card summary-card">
+                    <div class="card-content">
+                        <h3>Annual Report</h3>
+                        <div class="value" style="font-size: 16px;">FY 2025 Carbon Inventory</div>
+                        <div class="trend">
+                            <span style="color: var(--text-secondary);">Last generated: Jan 15, 2026</span>
+                        </div>
+                    </div>
+                    <div class="card-icon">
+                        <i class="fas fa-file-pdf"></i>
+                    </div>
+                </div>
+                <div class="card summary-card">
+                    <div class="card-content">
+                        <h3>Monthly Summary</h3>
+                        <div class="value" style="font-size: 16px;">December 2025</div>
+                        <div class="trend">
+                            <span style="color: var(--text-secondary);">Ready to download</span>
+                        </div>
+                    </div>
+                    <div class="card-icon">
+                        <i class="fas fa-calendar-alt"></i>
+                    </div>
+                </div>
+                <div class="card summary-card">
+                    <div class="card-content">
+                        <h3>Custom Report</h3>
+                        <div class="value" style="font-size: 16px;">Build Your Own</div>
+                        <div class="trend">
+                            <span style="color: var(--text-secondary);">Select parameters</span>
+                        </div>
+                    </div>
+                    <div class="card-icon">
+                        <i class="fas fa-sliders-h"></i>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Generated Reports Table -->
+            <div class="card facility-card">
+                <div class="card-header">
+                    <h2><i class="fas fa-folder-open"></i> Generated Reports</h2>
+                    <button class="btn btn-primary" id="generateReportBtn">
+                        <i class="fas fa-plus"></i> Generate New Report
+                    </button>
+                </div>
+                <div class="facility-content">
+                    <table class="facility-table">
+                        <thead>
+                            <tr>
+                                <th>Report Name</th>
+                                <th>Type</th>
+                                <th>Date Generated</th>
+                                <th>Size</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><i class="fas fa-file-pdf" style="color: #EF4444; margin-right: 8px;"></i> <strong>Annual_Report_2025.pdf</strong></td>
+                                <td>Annual</td>
+                                <td>Jan 15, 2026</td>
+                                <td>2.4 MB</td>
+                                <td>
+                                    <button class="btn btn-sm download-btn" data-filename="Annual_Report_2025.pdf" data-type="pdf" style="background: var(--accent-light); color: var(--accent);">
+                                        <i class="fas fa-download"></i>
+                                    </button>
+                                    <button class="btn btn-sm view-btn" data-filename="Annual_Report_2025.pdf" data-type="Annual" style="background: var(--scope2-light); color: var(--scope2-color);">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><i class="fas fa-file-excel" style="color: #22C55E; margin-right: 8px;"></i> <strong>Q4_2025_Emissions.xlsx</strong></td>
+                                <td>Quarterly</td>
+                                <td>Jan 10, 2026</td>
+                                <td>856 KB</td>
+                                <td>
+                                    <button class="btn btn-sm download-btn" data-filename="Q4_2025_Emissions.xlsx" data-type="xlsx" style="background: var(--accent-light); color: var(--accent);">
+                                        <i class="fas fa-download"></i>
+                                    </button>
+                                    <button class="btn btn-sm view-btn" data-filename="Q4_2025_Emissions.xlsx" data-type="Quarterly" style="background: var(--scope2-light); color: var(--scope2-color);">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><i class="fas fa-file-pdf" style="color: #EF4444; margin-right: 8px;"></i> <strong>Dec_2025_Summary.pdf</strong></td>
+                                <td>Monthly</td>
+                                <td>Jan 05, 2026</td>
+                                <td>1.1 MB</td>
+                                <td>
+                                    <button class="btn btn-sm download-btn" data-filename="Dec_2025_Summary.pdf" data-type="pdf" style="background: var(--accent-light); color: var(--accent);">
+                                        <i class="fas fa-download"></i>
+                                    </button>
+                                    <button class="btn btn-sm view-btn" data-filename="Dec_2025_Summary.pdf" data-type="Monthly" style="background: var(--scope2-light); color: var(--scope2-color);">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><i class="fas fa-file-csv" style="color: #3B82F6; margin-right: 8px;"></i> <strong>Scope1_Data_Export.csv</strong></td>
+                                <td>Data Export</td>
+                                <td>Dec 28, 2025</td>
+                                <td>324 KB</td>
+                                <td>
+                                    <button class="btn btn-sm download-btn" data-filename="Scope1_Data_Export.csv" data-type="csv" style="background: var(--accent-light); color: var(--accent);">
+                                        <i class="fas fa-download"></i>
+                                    </button>
+                                    <button class="btn btn-sm view-btn" data-filename="Scope1_Data_Export.csv" data-type="Data Export" style="background: var(--scope2-light); color: var(--scope2-color);">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Report Preview Modal -->
+    <div class="modal-overlay" id="reportModal">
+        <div class="modal-content" style="max-width: 700px;">
+            <div class="modal-header">
+                <h3 id="modalTitle"><i class="fas fa-file-alt"></i> Report Preview</h3>
+                <button class="modal-close" onclick="closeModal()">&times;</button>
+            </div>
+            <div class="modal-body" id="modalBody">
+                <!-- Report preview content -->
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeModal()">Close</button>
+                <button class="btn btn-primary" id="modalDownloadBtn">
+                    <i class="fas fa-download"></i> Download
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Generate Report Modal -->
+    <div class="modal-overlay" id="generateModal">
+        <div class="modal-content" style="max-width: 500px;">
+            <div class="modal-header">
+                <h3><i class="fas fa-file-export"></i> Generate New Report</h3>
+                <button class="modal-close" onclick="closeGenerateModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group" style="margin-bottom: 20px;">
+                    <label style="display: block; margin-bottom: 8px; font-weight: 500;">Report Type</label>
+                    <select id="reportType" style="width: 100%; padding: 12px; border: 1px solid #E2E8F0; border-radius: 8px; font-size: 14px;">
+                        <option value="annual">Annual Report (PDF)</option>
+                        <option value="quarterly">Quarterly Report (PDF)</option>
+                        <option value="monthly">Monthly Summary (PDF)</option>
+                        <option value="data-export">Data Export (CSV)</option>
+                        <option value="excel">Excel Workbook (XLSX)</option>
+                    </select>
+                </div>
+                <div class="form-group" style="margin-bottom: 20px;">
+                    <label style="display: block; margin-bottom: 8px; font-weight: 500;">Date Range</label>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                        <input type="date" id="startDate" style="padding: 12px; border: 1px solid #E2E8F0; border-radius: 8px;">
+                        <input type="date" id="endDate" style="padding: 12px; border: 1px solid #E2E8F0; border-radius: 8px;">
+                    </div>
+                </div>
+                <div class="form-group" style="margin-bottom: 20px;">
+                    <label style="display: block; margin-bottom: 8px; font-weight: 500;">Include Sections</label>
+                    <div style="display: flex; flex-direction: column; gap: 10px;">
+                        <label style="display: flex; align-items: center; gap: 10px; cursor: pointer;">
+                            <input type="checkbox" checked style="width: 18px; height: 18px;"> Scope 1 Emissions
+                        </label>
+                        <label style="display: flex; align-items: center; gap: 10px; cursor: pointer;">
+                            <input type="checkbox" checked style="width: 18px; height: 18px;"> Scope 2 Emissions
+                        </label>
+                        <label style="display: flex; align-items: center; gap: 10px; cursor: pointer;">
+                            <input type="checkbox" checked style="width: 18px; height: 18px;"> Charts & Visualizations
+                        </label>
+                        <label style="display: flex; align-items: center; gap: 10px; cursor: pointer;">
+                            <input type="checkbox" style="width: 18px; height: 18px;"> Detailed Activity Log
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeGenerateModal()">Cancel</button>
+                <button class="btn btn-primary" onclick="generateReport()">
+                    <i class="fas fa-cog"></i> Generate Report
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div class="toast" id="toast">
+        <i class="fas fa-check-circle"></i>
+        <span id="toastMessage">Report downloaded successfully!</span>
+    </div>
+
+    <style>
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        .modal-content {
+            background: white;
+            border-radius: 16px;
+            width: 90%;
+            max-height: 80vh;
+            overflow: hidden;
+            transform: translateY(-20px);
+            transition: transform 0.3s ease;
+        }
+        .modal-overlay.active .modal-content {
+            transform: translateY(0);
+        }
+        .modal-header {
+            padding: 20px 24px;
+            border-bottom: 1px solid #E2E8F0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .modal-header h3 {
+            font-size: 1.25rem;
+            color: #1E293B;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .modal-header h3 i {
+            color: var(--accent);
+        }
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 24px;
+            color: #64748B;
+            cursor: pointer;
+            padding: 5px;
+            line-height: 1;
+        }
+        .modal-close:hover {
+            color: #1E293B;
+        }
+        .modal-body {
+            padding: 24px;
+            max-height: 50vh;
+            overflow-y: auto;
+        }
+        .modal-footer {
+            padding: 16px 24px;
+            border-top: 1px solid #E2E8F0;
+            display: flex;
+            justify-content: flex-end;
+            gap: 12px;
+        }
+        .btn-secondary {
+            background: #E2E8F0;
+            color: #475569;
+        }
+        .btn-secondary:hover {
+            background: #CBD5E1;
+        }
+        .report-preview {
+            background: #F8FAFC;
+            border: 1px solid #E2E8F0;
+            border-radius: 12px;
+            padding: 24px;
+        }
+        .report-preview-header {
+            text-align: center;
+            padding-bottom: 20px;
+            border-bottom: 2px solid var(--accent);
+            margin-bottom: 20px;
+        }
+        .report-preview-header h4 {
+            font-size: 1.5rem;
+            color: #1E293B;
+            margin-bottom: 5px;
+        }
+        .report-preview-header p {
+            color: #64748B;
+            font-size: 0.9rem;
+        }
+        .report-stats {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+            margin-bottom: 20px;
+        }
+        .report-stat {
+            background: white;
+            padding: 16px;
+            border-radius: 8px;
+            border: 1px solid #E2E8F0;
+        }
+        .report-stat label {
+            display: block;
+            font-size: 0.8rem;
+            color: #64748B;
+            margin-bottom: 4px;
+        }
+        .report-stat value {
+            display: block;
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #1E293B;
+        }
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: #10B981;
+            color: white;
+            padding: 16px 24px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            box-shadow: 0 10px 30px rgba(16, 185, 129, 0.3);
+            transform: translateY(100px);
+            opacity: 0;
+            transition: all 0.3s ease;
+            z-index: 3000;
+        }
+        .toast.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+        .toast.error {
+            background: #EF4444;
+            box-shadow: 0 10px 30px rgba(239, 68, 68, 0.3);
+        }
+    </style>
+
+    <script src="script.js"></script>
+    <script src="auth.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const user = checkAuth();
+            if (!user) { window.location.href = 'login.html'; return; }
+            document.getElementById('userNameHeader').textContent = user.firstName || user.name;
+            document.getElementById('profileName').textContent = user.name;
+            document.getElementById('profileEmail').textContent = user.email;
+            const sidebarUserName = document.querySelector('.user-name');
+            if (sidebarUserName) sidebarUserName.textContent = user.name;
+
+            document.getElementById('notificationBtn')?.addEventListener('click', e => { e.stopPropagation(); document.getElementById('notificationDropdown')?.classList.toggle('active'); document.getElementById('profileDropdown')?.classList.remove('active'); });
+            document.getElementById('profileBtn')?.addEventListener('click', e => { e.stopPropagation(); document.getElementById('profileDropdown')?.classList.toggle('active'); document.getElementById('notificationDropdown')?.classList.remove('active'); });
+            document.addEventListener('click', () => { document.getElementById('notificationDropdown')?.classList.remove('active'); document.getElementById('profileDropdown')?.classList.remove('active'); });
+            
+            // Load profile picture
+            loadProfilePicture();
+        });
+        function markAllRead() { document.querySelectorAll('.notification-item.unread').forEach(i => i.classList.remove('unread')); document.getElementById('notificationBadge').style.display = 'none'; }
+        
+        function loadProfilePicture() {
+            const profilePicture = localStorage.getItem('urimpact_profile_picture');
+            if (profilePicture) {
+                const avatars = [document.querySelector('.header-item.profile .user-avatar'), document.querySelector('.profile-avatar'), document.querySelector('.sidebar-footer .user-avatar')];
+                avatars.forEach(avatar => { if (avatar) avatar.innerHTML = `<img src="${profilePicture}" style="width: 100%; height: 100%; object-fit: cover; border-radius: 50%;" alt="Avatar">`; });
+            }
+        }
+
+        // Download button handlers
+        document.querySelectorAll('.download-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const filename = this.dataset.filename;
+                const type = this.dataset.type;
+                downloadReport(filename, type);
+            });
+        });
+
+        // View button handlers
+        document.querySelectorAll('.view-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const filename = this.dataset.filename;
+                const type = this.dataset.type;
+                viewReport(filename, type);
+            });
+        });
+
+        // Generate Report button
+        document.getElementById('generateReportBtn')?.addEventListener('click', function() {
+            document.getElementById('generateModal').classList.add('active');
+            // Set default dates
+            const today = new Date();
+            const lastMonth = new Date(today.getFullYear(), today.getMonth() - 1, 1);
+            document.getElementById('startDate').value = lastMonth.toISOString().split('T')[0];
+            document.getElementById('endDate').value = today.toISOString().split('T')[0];
+        });
+
+        // Download Report Function
+        function downloadReport(filename, type) {
+            showToast(`Downloading ${filename}...`);
+            
+            // Generate demo content based on file type
+            let content, mimeType;
+            
+            if (type === 'csv') {
+                content = generateCSVContent();
+                mimeType = 'text/csv';
+            } else if (type === 'xlsx') {
+                // For demo, we'll download as CSV since XLSX requires a library
+                content = generateCSVContent();
+                mimeType = 'text/csv';
+                filename = filename.replace('.xlsx', '.csv');
+            } else {
+                // For PDF, generate a text file as demo
+                content = generateReportText(filename);
+                mimeType = 'text/plain';
+                filename = filename.replace('.pdf', '.txt');
+            }
+
+            // Create and trigger download
+            const blob = new Blob([content], { type: mimeType });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = filename;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+
+            setTimeout(() => {
+                showToast(`${filename} downloaded successfully!`);
+            }, 500);
+        }
+
+        // Generate CSV Content
+        function generateCSVContent() {
+            return `Date,Scope,Category,Source,Amount,Unit,Emissions (tCO2e)
+2025-01-15,Scope 1,Stationary Combustion,Natural Gas,1500,m³,2.85
+2025-01-15,Scope 1,Mobile Combustion,Diesel Fleet,2000,liters,5.32
+2025-01-20,Scope 2,Purchased Electricity,Grid Power,45000,kWh,18.45
+2025-01-25,Scope 1,Stationary Combustion,Propane,800,gallons,4.52
+2025-02-01,Scope 2,Purchased Electricity,Grid Power,42000,kWh,17.22
+2025-02-10,Scope 1,Mobile Combustion,Gasoline Fleet,1800,liters,4.18
+2025-02-15,Scope 1,Fugitive Emissions,Refrigerant Leakage,5,kg,7.25
+2025-02-20,Scope 2,Purchased Electricity,Grid Power,48000,kWh,19.68
+2025-03-01,Scope 1,Stationary Combustion,Natural Gas,1400,m³,2.66
+2025-03-15,Scope 2,Purchased Electricity,Grid Power,44000,kWh,18.04`;
+        }
+
+        // Generate Report Text
+        function generateReportText(filename) {
+            const date = new Date().toLocaleDateString();
+            return `========================================
+URIMPACT CARBON EMISSION REPORT
+========================================
+
+Report: ${filename}
+Generated: ${date}
+Organization: URIMPACT Demo Organization
+
+----------------------------------------
+EXECUTIVE SUMMARY
+----------------------------------------
+
+Total Emissions: 2,150.03 tCO2e
+Scope 1 Emissions: 550 tCO2e (25.6%)
+Scope 2 Emissions: 1,600.03 tCO2e (74.4%)
+
+Year-over-Year Change: -12% (reduction)
+
+----------------------------------------
+SCOPE 1 BREAKDOWN
+----------------------------------------
+
+Stationary Combustion: 220 tCO2e
+- Natural Gas: 180 tCO2e
+- Propane: 40 tCO2e
+
+Mobile Combustion: 280 tCO2e
+- Diesel Fleet: 180 tCO2e
+- Gasoline Vehicles: 100 tCO2e
+
+Fugitive Emissions: 50 tCO2e
+- Refrigerant Leakage: 50 tCO2e
+
+----------------------------------------
+SCOPE 2 BREAKDOWN
+----------------------------------------
+
+Purchased Electricity: 1,600.03 tCO2e
+- Grid Region: Default
+- Calculation Method: Location-based
+
+----------------------------------------
+RECOMMENDATIONS
+----------------------------------------
+
+1. Consider renewable energy procurement
+2. Implement energy efficiency measures
+3. Optimize fleet fuel consumption
+4. Monitor refrigerant systems regularly
+
+----------------------------------------
+Report generated by URIMPACT Platform
+www.urimpact.com
+========================================`;
+        }
+
+        // View Report Function
+        function viewReport(filename, type) {
+            document.getElementById('modalTitle').innerHTML = `<i class="fas fa-file-alt"></i> ${filename}`;
+            document.getElementById('modalBody').innerHTML = `
+                <div class="report-preview">
+                    <div class="report-preview-header">
+                        <h4>URIMPACT Carbon Report</h4>
+                        <p>${type} Report - Generated Jan 2026</p>
+                    </div>
+                    <div class="report-stats">
+                        <div class="report-stat">
+                            <label>Total Emissions</label>
+                            <value>2,150.03 tCO2e</value>
+                        </div>
+                        <div class="report-stat">
+                            <label>Scope 1</label>
+                            <value>550 tCO2e</value>
+                        </div>
+                        <div class="report-stat">
+                            <label>Scope 2</label>
+                            <value>1,600.03 tCO2e</value>
+                        </div>
+                        <div class="report-stat">
+                            <label>YoY Change</label>
+                            <value style="color: #10B981;">-12%</value>
+                        </div>
+                    </div>
+                    <div style="background: white; padding: 16px; border-radius: 8px; border: 1px solid #E2E8F0;">
+                        <h5 style="margin-bottom: 10px; color: #1E293B;">Report Contents</h5>
+                        <ul style="color: #64748B; font-size: 0.9rem; padding-left: 20px;">
+                            <li>Executive Summary</li>
+                            <li>Scope 1 Emissions Analysis</li>
+                            <li>Scope 2 Emissions Analysis</li>
+                            <li>Monthly Trends & Charts</li>
+                            <li>Recommendations</li>
+                            <li>Appendix: Raw Data</li>
+                        </ul>
+                    </div>
+                </div>
+            `;
+            
+            // Set up modal download button
+            document.getElementById('modalDownloadBtn').onclick = function() {
+                closeModal();
+                downloadReport(filename, filename.split('.').pop());
+            };
+            
+            document.getElementById('reportModal').classList.add('active');
+        }
+
+        // Close Modal
+        function closeModal() {
+            document.getElementById('reportModal').classList.remove('active');
+        }
+
+        // Close Generate Modal
+        function closeGenerateModal() {
+            document.getElementById('generateModal').classList.remove('active');
+        }
+
+        // Generate Report
+        function generateReport() {
+            const reportType = document.getElementById('reportType').value;
+            const startDate = document.getElementById('startDate').value;
+            const endDate = document.getElementById('endDate').value;
+
+            closeGenerateModal();
+            showToast('Generating report...', false);
+
+            // Simulate report generation
+            setTimeout(() => {
+                let filename, type;
+                const dateStr = new Date().toISOString().split('T')[0].replace(/-/g, '');
+                
+                switch(reportType) {
+                    case 'annual':
+                        filename = `Annual_Report_${dateStr}.pdf`;
+                        type = 'pdf';
+                        break;
+                    case 'quarterly':
+                        filename = `Quarterly_Report_${dateStr}.pdf`;
+                        type = 'pdf';
+                        break;
+                    case 'monthly':
+                        filename = `Monthly_Summary_${dateStr}.pdf`;
+                        type = 'pdf';
+                        break;
+                    case 'data-export':
+                        filename = `Data_Export_${dateStr}.csv`;
+                        type = 'csv';
+                        break;
+                    case 'excel':
+                        filename = `Report_${dateStr}.xlsx`;
+                        type = 'xlsx';
+                        break;
+                }
+
+                showToast('Report generated! Starting download...');
+                
+                setTimeout(() => {
+                    downloadReport(filename, type);
+                }, 1000);
+            }, 2000);
+        }
+
+        // Show Toast
+        function showToast(message, autoHide = true) {
+            const toast = document.getElementById('toast');
+            document.getElementById('toastMessage').textContent = message;
+            toast.classList.add('show');
+            
+            if (autoHide) {
+                setTimeout(() => {
+                    toast.classList.remove('show');
+                }, 3000);
+            }
+        }
+
+        // Close modals on outside click
+        document.querySelectorAll('.modal-overlay').forEach(modal => {
+            modal.addEventListener('click', function(e) {
+                if (e.target === this) {
+                    this.classList.remove('active');
+                }
+            });
+        });
+
+        // Close modals on Escape key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                document.querySelectorAll('.modal-overlay.active').forEach(modal => {
+                    modal.classList.remove('active');
+                });
+            }
+        });
+    </script>
+</body>
+</html>
