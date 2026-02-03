@@ -438,7 +438,7 @@ function submitExtractedData() {
     const result = DataStore.addScope2Entry(entry);
     console.log('Entry added with emissions:', result.emissions);
     
-    showSuccessMessage(
+    showInputSuccessMessage(
         'Data Submitted Successfully!', 
         `Emission data has been recorded (${result.emissions.toFixed(2)} tCO₂e). Click "View Dashboard" to see the updated values.`,
         true
@@ -529,7 +529,7 @@ function submitManualEntry() {
     
     if (entriesAdded > 0) {
         console.log(`${entriesAdded} entries added, total emissions: ${totalEmissions}`);
-        showSuccessMessage(
+        showInputSuccessMessage(
             'Data Submitted Successfully!', 
             `${entriesAdded} emission ${entriesAdded === 1 ? 'entry has' : 'entries have'} been recorded (${totalEmissions.toFixed(2)} tCO₂e total). Click "View Dashboard" to see the updated values.`,
             true
@@ -584,7 +584,7 @@ function showNotification(message, type = 'info') {
 // ============================================
 // Success Message Modal
 // ============================================
-function showSuccessMessage(title, message, showDashboardLink = false) {
+function showInputSuccessMessage(title, message, showDashboardLink = false) {
     const modal = document.createElement('div');
     modal.className = 'success-modal';
     modal.innerHTML = `

@@ -12,6 +12,11 @@ document.addEventListener('DOMContentLoaded', function() {
     const footerText = document.getElementById('footerText');
     const footerLink = document.getElementById('footerLink');
 
+    // If we're not on the login page, skip login-only wiring
+    if (!signinForm || !signupForm || tabBtns.length === 0) {
+        return;
+    }
+
     tabBtns.forEach(btn => {
         btn.addEventListener('click', function() {
             const tab = this.dataset.tab;
