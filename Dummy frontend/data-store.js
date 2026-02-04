@@ -297,6 +297,60 @@ const DataStore = {
         return breakdown;
     },
 
+    // Aggregated activity data for report table (from data input)
+    getReportActivityData: function() {
+        const scope1 = this.getScope1Entries();
+        const scope2 = this.getScope2Entries();
+        let mobileAmount = 0, mobileUnit = 'L', mobileFuel = 'Diesel';
+        let stationaryAmount = 0, stationaryUnit = 'm³', stationaryFuel = 'Natural Gas';
+        let totalKwh = 0;
+
+        scope1.forEach(entry => {
+            const amt = Number(entry.amount) || 0;
+            if (entry.combustionType === 'mobile') {
+                mobileAmount += amt;
+                if (entry.unit) mobileUnit = entry.unit === 'Liters' ? 'L' : entry.unit === 'Gallons' ? 'Gal' : entry.unit;
+                if (entry.fuelType) mobileFuel = entry.fuelType;
+            } else {
+                stationaryAmount += amt;
+                if (entry.unit) stationaryUnit = entry.unit;
+                if (entry.fuelType) stationaryFuel = entry.fuelType;
+            }
+        });
+
+        scope2.forEach(entry => {
+            let kwh = Number(entry.electricity) || 0;
+            if (entry.unit === 'MWh') kwh = kwh * 1000;
+            totalKwh += kwh;
+        });
+
+        const fmt = (n, decimals) => Number(n).toLocaleString('en-US', { maximumFractionDigits: decimals ?? 0, minimumFractionDigits: 0 });
+        const mobileLabel = mobileAmount > 0 ? `${fmt(mobileAmount)} ${mobileUnit}` : '0 L';
+        const stationaryLabel = stationaryAmount > 0 ? `${fmt(stationaryAmount)} ${stationaryUnit}` : '0 m³';
+        const scope2Label = totalKwh >= 1000 ? `${fmt(totalKwh / 1000, 1)} MWh` : `${fmt(totalKwh)} kWh`;
+
+        return {
+            mobile: { amount: mobileAmount, unit: mobileUnit, fuelType: mobileFuel, label: mobileLabel },
+            stationary: { amount: stationaryAmount, unit: stationaryUnit, fuelType: stationaryFuel, label: stationaryLabel },
+            scope2: { totalKwh, label: scope2Label }
+        };
+    },
+
+    // Reporting period from data (min/max dates) or null for default
+    getReportingPeriodLabel: function() {
+        const s1 = this.getScope1Entries();
+        const s2 = this.getScope2Entries();
+        const dates = [...s1.map(e => e.date), ...s2.map(e => e.date)].filter(Boolean);
+        if (dates.length === 0) return null;
+        const min = dates.reduce((a, b) => (a < b ? a : b));
+        const max = dates.reduce((a, b) => (a > b ? a : b));
+        const fmt = (d) => {
+            const x = new Date(d);
+            return x.toLocaleDateString('en-US', { month: 'short', year: 'numeric' });
+        };
+        return `${fmt(min)} – ${fmt(max)}`;
+    },
+
     // Get total amount spent (USD) - derived from entries for demo
     getAmountSpent: function() {
         const scope1 = this.getScope1Entries();
