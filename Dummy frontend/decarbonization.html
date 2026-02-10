@@ -148,6 +148,41 @@
         }
         .project-details p { margin-bottom: 12px; }
         .project-details strong { color: #1E293B; }
+        .project-select-wrap {
+            margin-bottom: 20px;
+        }
+        .project-select-wrap label {
+            display: block;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-primary, #1E293B);
+            margin-bottom: 8px;
+        }
+        .project-select-wrap select {
+            width: 100%;
+            padding: 12px 14px;
+            border: 1px solid #E2E8F0;
+            border-radius: 8px;
+            font-size: 14px;
+            color: var(--text-primary, #1E293B);
+            background: #FFFFFF;
+            cursor: pointer;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%2364748B' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 14px center;
+            padding-right: 36px;
+        }
+        .project-select-wrap select:focus {
+            outline: none;
+            border-color: var(--accent, #14B8A6);
+        }
+        .project-info-row {
+            margin-bottom: 10px;
+            font-size: 14px;
+            color: #475569;
+        }
+        .project-info-row strong { color: #1E293B; }
         .verified-badge {
             margin-top: 20px;
             padding: 12px 16px;
@@ -270,11 +305,24 @@
                     </div>
                     <div class="decarb-card" style="flex: 1;">
                         <div class="decarb-card-title">Project Details</div>
-                        <div class="project-details">
-                            <p><strong>Project:</strong> Majmaah University, Saudi Arabia</p>
-                            <p><strong>Verification:</strong> High-resolution satellite + drone audits</p>
-                            <p><strong>Co-Benefits:</strong> Desert greening, student research, local jobs</p>
-                            <div class="verified-badge">
+                        <div class="project-select-wrap">
+                            <label for="project-select">Select a project</label>
+                            <select id="project-select">
+                                <option value="">— Choose a project —</option>
+                                <option value="kku">King Khalid University — KKU greening project</option>
+                                <option value="majmaah">Majmaah Planting project</option>
+                            </select>
+                        </div>
+                        <div class="project-details" id="project-details-box">
+                            <p class="project-info-placeholder" id="project-info-placeholder" style="color: #94A3B8;">Select a project above to view details.</p>
+                            <div id="project-info-content" style="display: none;">
+                                <p class="project-info-row"><strong>Project:</strong> <span id="project-name-display"></span></p>
+                                <p class="project-info-row"><strong>Trees planted:</strong> <span id="project-trees-display"></span></p>
+                                <p class="project-info-row"><strong>Species mix:</strong> <span id="project-species-display"></span></p>
+                                <p class="project-info-row"><strong>Verification:</strong> High-resolution satellite + drone audits</p>
+                                
+                            </div>
+                            <div class="verified-badge" id="verified-badge" style="display: none;">
                                 <i class="fas fa-check-circle"></i> <strong>Verified:</strong> Each tree is verified by high resolution satellite or drone data.
                             </div>
                         </div>
@@ -322,6 +370,10 @@
 
             document.getElementById('tree-slider').addEventListener('input', function(e) {
                 updateDecarbDashboard(parseInt(e.target.value, 10));
+            });
+
+            document.getElementById('project-select').addEventListener('change', function() {
+                updateProjectDetails(this.value);
             });
 
             const menuToggle = document.getElementById('menuToggle');
@@ -399,6 +451,37 @@
             const num = typeof n === 'number' ? n : parseFloat(n);
             if (Number.isInteger(num)) return num.toLocaleString();
             return num.toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 2 });
+        }
+
+        const PROJECTS = {
+            kku: { name: 'King Khalid University — KKU greening project' },
+            majmaah: { name: 'Majmaah Planting project' }
+        };
+        const SPECIES_MIX = ['Date palm', 'Ghaf', 'Sidr'];
+
+        function randomTrees() {
+            return Math.floor(Math.random() * (6000 - 3000 + 1)) + 3000;
+        }
+
+        function updateProjectDetails(projectId) {
+            const placeholder = document.getElementById('project-info-placeholder');
+            const content = document.getElementById('project-info-content');
+            const badge = document.getElementById('verified-badge');
+            if (!projectId) {
+                placeholder.style.display = 'block';
+                content.style.display = 'none';
+                badge.style.display = 'none';
+                return;
+            }
+            const project = PROJECTS[projectId];
+            if (!project) return;
+            if (typeof project._cachedTrees !== 'number') project._cachedTrees = randomTrees();
+            document.getElementById('project-name-display').textContent = project.name;
+            document.getElementById('project-trees-display').textContent = formatNum(project._cachedTrees);
+            document.getElementById('project-species-display').textContent = SPECIES_MIX.join(', ');
+            placeholder.style.display = 'none';
+            content.style.display = 'block';
+            badge.style.display = 'block';
         }
 
         function confirmPlant() {
