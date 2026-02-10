@@ -289,10 +289,10 @@
                             <span>Trees to Plant (URIMPACT Initiative)</span>
                             <span class="slider-value" id="tree-count-display">0 Trees</span>
                         </div>
-                        <input type="range" min="0" max="5000" value="0" step="50" id="tree-slider">
+                        <input type="range" min="0" max="6000" value="0" step="50" id="tree-slider">
                         <div style="display: flex; justify-content: space-between; margin-top: 5px; font-size: 12px; color: #94A3B8;">
                             <span>0</span>
-                            <span>5,000</span>
+                            <span>6,000</span>
                         </div>
                     </div>
                 </div>
@@ -467,21 +467,28 @@
             const placeholder = document.getElementById('project-info-placeholder');
             const content = document.getElementById('project-info-content');
             const badge = document.getElementById('verified-badge');
+            const slider = document.getElementById('tree-slider');
             if (!projectId) {
                 placeholder.style.display = 'block';
                 content.style.display = 'none';
                 badge.style.display = 'none';
+                slider.value = 0;
+                updateDecarbDashboard(0);
                 return;
             }
             const project = PROJECTS[projectId];
             if (!project) return;
             if (typeof project._cachedTrees !== 'number') project._cachedTrees = randomTrees();
+            const treeCount = project._cachedTrees;
             document.getElementById('project-name-display').textContent = project.name;
-            document.getElementById('project-trees-display').textContent = formatNum(project._cachedTrees);
+            document.getElementById('project-trees-display').textContent = formatNum(treeCount);
             document.getElementById('project-species-display').textContent = SPECIES_MIX.join(', ');
             placeholder.style.display = 'none';
             content.style.display = 'block';
             badge.style.display = 'block';
+            // Sync slider to project tree count so decarbonization potential matches the chosen project
+            slider.value = treeCount;
+            updateDecarbDashboard(treeCount);
         }
 
         function confirmPlant() {
