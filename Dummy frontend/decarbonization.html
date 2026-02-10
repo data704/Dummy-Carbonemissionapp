@@ -100,6 +100,15 @@
             box-shadow: 0 2px 6px rgba(20, 184, 166, 0.4);
             border: 2px solid white;
         }
+        input[type=range]:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        input[type=range]:disabled::-webkit-slider-thumb {
+            background: #94A3B8;
+            cursor: not-allowed;
+            box-shadow: none;
+        }
         .impact-card {
             background: linear-gradient(135deg, #14B8A6 0%, #0D9488 100%);
             color: white;
@@ -289,10 +298,10 @@
                             <span>Trees to Plant (URIMPACT Initiative)</span>
                             <span class="slider-value" id="tree-count-display">0 Trees</span>
                         </div>
-                        <input type="range" min="0" max="6000" value="0" step="50" id="tree-slider">
+                        <input type="range" min="0" max="6000" value="0" step="50" id="tree-slider" disabled>
                         <div style="display: flex; justify-content: space-between; margin-top: 5px; font-size: 12px; color: #94A3B8;">
                             <span>0</span>
-                            <span>6,000</span>
+                            <span id="slider-max-label">6,000</span>
                         </div>
                     </div>
                 </div>
@@ -317,7 +326,7 @@
                             <p class="project-info-placeholder" id="project-info-placeholder" style="color: #94A3B8;">Select a project above to view details.</p>
                             <div id="project-info-content" style="display: none;">
                                 <p class="project-info-row"><strong>Project:</strong> <span id="project-name-display"></span></p>
-                                <p class="project-info-row"><strong>Trees planted:</strong> <span id="project-trees-display"></span></p>
+                                <p class="project-info-row"><strong>Available trees:</strong> <span id="project-trees-display"></span></p>
                                 <p class="project-info-row"><strong>Species mix:</strong> <span id="project-species-display"></span></p>
                                 <p class="project-info-row"><strong>Verification:</strong> High-resolution satellite + drone audits</p>
                                 
@@ -468,36 +477,60 @@
             const content = document.getElementById('project-info-content');
             const badge = document.getElementById('verified-badge');
             const slider = document.getElementById('tree-slider');
+            const sliderMaxLabel = document.getElementById('slider-max-label');
+            
             if (!projectId) {
                 placeholder.style.display = 'block';
                 content.style.display = 'none';
                 badge.style.display = 'none';
+                // Reset slider to default state and disable until project selected
+                slider.max = 6000;
                 slider.value = 0;
+                slider.disabled = true;
+                if (sliderMaxLabel) sliderMaxLabel.textContent = '6,000';
                 updateDecarbDashboard(0);
                 return;
             }
+            
+            // Enable slider when project is selected
+            slider.disabled = false;
             const project = PROJECTS[projectId];
             if (!project) return;
             if (typeof project._cachedTrees !== 'number') project._cachedTrees = randomTrees();
             const treeCount = project._cachedTrees;
+            
             document.getElementById('project-name-display').textContent = project.name;
             document.getElementById('project-trees-display').textContent = formatNum(treeCount);
             document.getElementById('project-species-display').textContent = SPECIES_MIX.join(', ');
             placeholder.style.display = 'none';
             content.style.display = 'block';
             badge.style.display = 'block';
-            // Sync slider to project tree count so decarbonization potential matches the chosen project
+            
+            // Set slider max to project's total tree count
+            slider.max = treeCount;
+            if (sliderMaxLabel) sliderMaxLabel.textContent = formatNum(treeCount);
+            
+            // Set slider to max (all available trees) by default
             slider.value = treeCount;
             updateDecarbDashboard(treeCount);
         }
 
         function confirmPlant() {
+            const projectSelect = document.getElementById('project-select');
             const trees = parseInt(document.getElementById('tree-slider').value, 10);
+            
+            if (!projectSelect.value) {
+                alert('Please select a project first.');
+                return;
+            }
+            
             if (trees === 0) {
                 alert('Please select at least one tree to plant.');
                 return;
             }
-            alert('Thank you! Your commitment to plant ' + formatNum(trees) + ' trees has been recorded. Our team will confirm the project and verification details.');
+            
+            const projectName = PROJECTS[projectSelect.value]?.name || 'selected project';
+            alert('Thank you! Your commitment to plant ' + formatNum(trees) + ' trees in the "' + projectName + '" has been recorded. Our team will confirm the verification details.');
         }
 
         function markAllRead() {
